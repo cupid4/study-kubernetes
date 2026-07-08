@@ -8,8 +8,13 @@ spec:
   type: LoadBalancer	
   ports:
   - protocol: TCP
+  # LoadBalancer 생성시 NodePort를 지정하지 않으면 자동으로 설정 됨
     nodePort: 31002
-    port: 80	
+  # 이 manifest 로 생성하는 Service 에서 사용할 포트(이 경우 LoadBalancer를 80 포트로 설정한다는 의미)
+    port: 80
     targetPort: 80
+  # 외부에서 접근할 수 있는 외부 IP 설정
   externalIPs:
-  - 10.0.2.4
+  # 내 물리적 IP로 설정한다.
+  # Mac 의 경우 `ipconfig getifaddr en0` 실행해서 ip 확인
+  - 10.202.14.143
