@@ -1,0 +1,21 @@
+# kubectl apply -f deploy-test04.yml 
+# kubectl get deploy,rs,po
+# kubectl delete -f deploy-test04.yml 
+
+apiVersion: apps/v1                         # ❷ 쿠버네티스 API의 그룹과 버전을 지정합니다. (디플로이먼트는 apps/v1 사용)
+kind: Deployment                            # ❸ 생성할 오브젝트 종류가 디플로이먼트(Deployment)임을 명시합니다.
+metadata:                                   # ❹ 오브젝트의 메타데이터(이름 등) 설정 구문입니다.
+  name: deploy-test01                       # ❺ 이 디플로이먼트의 이름을 'deploy-test01'로 지정합니다.
+spec:                                       # ❻ 디플로이먼트의 명세(원하는 상태)를 정의합니다.
+  replicas: 3                               # ❼ 생성할 파드(Pod)의 개수를 3개로 지정하여 레플리카셋을 제어합니다.
+  selector:                                 # ❽ 디플로이먼트가 어떤 파드를 찾아서 관리할지 결정하는 스캐너입니다. 파드에 라벨을 붙이는 옵션으로 selector를 통해 디플로이먼트가 관리할 파드를 연결한다.
+    matchLabels:                            # ❾ 일치해야 하는 라벨 조건을 정의합니다.
+      app.kubernetes.io/name: web-deploy    # ❿ 이 라벨이 붙은 파드들을 관리 대상으로 삼습니다.
+  template:                                 # ⑪ 실제 생성될 파드의 모양을 정의하는 템플릿(붕어빵 틀)입니다.
+    metadata:                               # ⑫ 생성될 파드의 메타데이터입니다.
+      labels:                               # ⑬ 파드에 부여할 라벨(이름표)을 설정합니다.
+        app.kubernetes.io/name: web-deploy  # ⑭ selector.matchLabels(❿)와 반드시 일치해야 합니다.
+    spec:                                   # ⑮ 파드 내부 사양(컨테이너)을 정의하는 구문입니다.
+      containers:                           # ⑯ 파드 안에서 실행될 컨테이너 목록을 지정합니다.
+        - name: nginx                       # ⑰ 컨테이너의 이름을 'nginx'로 지정합니다.
+          image: nginx:latest               # ⑱ 컨테이너를 생성할 때 사용할 도커 이미지와 태그를 지정합니다.
