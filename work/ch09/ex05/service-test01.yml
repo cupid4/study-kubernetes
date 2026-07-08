@@ -1,0 +1,11 @@
+apiVersion: v1	
+kind: Service	                              # ❸ 오브젝트의 종류는 서비스이므로 kind는 Service라고 입력합니다.
+metadata:	                                  # ❹ 서비스의 메타 데이터를 입력합니다.
+  name: web-service	                        # ❺ 해당 서비스 이름은 web-service라고 짓겠습니다.
+spec:	                                      # ❻ 서비스의 상태를 입력합니다.
+  selector:	                                # ❼ selector 항목에는 서비스에 연결할 파드를 입력합니다.
+    app.kubernetes.io/name: web-deploy		  # ❽ 우리가 생성하게 될 서비스는 앞서 생성했던 web-deploy 파드와 연결할 것이므로 서비스에 연결할 파드 정보를 입력합니다.
+  type: ClusterIP                           # ❾ type은 ClusterIP라고 적어줍니다.
+  ports:	                                  # ❿ 포트 정보를 입력합니다.
+  - protocol: TCP	                          # ⓫ 프로토콜은 TCP를 사용합니다.
+    port: 80                                # ⓬ 포트는 80번을 사용합니다.
