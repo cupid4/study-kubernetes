@@ -1,18 +1,19 @@
-apiVersion: v1	
-kind: Pod	
-metadata:
-  name: nginx-volume-02		
-spec:	
-  nodeSelector:	
-    kubernetes.io/hostname: myserver03	
-  containers:	
-  - name: nginx-test01	
-    image: nginx:latest	
-    volumeMounts:
-    - name: hostpath-test01	
-      mountPath: /mount01
-  volumes:	
-  - name: hostpath-test01	
-    hostPath:	
-      path: /home/eevee/work/volhost01	
-      type: DirectoryOrCreate
+ # 1: vim 을 활용해 yml 파일을 생성합니다.
+ apiVersion: v1                              # 2: apiVersion 을 입력합니다.
+ kind: Pod                                   # 3: 종류는 Pod 로 설정합니다.
+ metadata:                                   # 4: 메타 데이터를 입력합니다.
+   name: nginx-volume-02                     # 5: 적절한 파드 이름을 생성합니다.
+ spec:                                       # 6: spec 을 통해 파드 내부의 상태를 정해주게 됩니다. 파드 내부에는 컨테이너와 볼륨을 생성할 예정입니다.
+   nodeSelector:                             # 7: nodeSelector 를 통해 파드가 실행될 노드를 정합니다.
+     kubernetes.io/hostname: myserver03      # 8: 이번 실습에서 생성할 파드가 hostPath 가 존재하는 myserver03 에 생성되도록 설정하겠습니다.
+   containers:                               # 9: 컨테이너를 생성합니다.
+   - name: nginx-test01                      # 10: 컨테이너 이름을 정합니다.
+     image: nginx:latest                     # 11: 컨테이너 생성에 사용할 이미지를 설정합니다.
+     volumeMounts:                           # 12: 컨테이너가 사용할 볼륨을 마운트합니다.
+     - name: hostpath-test01                 # 13: 컨테이너가 사용하게 될 볼륨 이름을 작성합니다. 이때 사용하는 볼륨 이름은 이후 생성할 볼륨 이름과 일치해야 합니다.
+       mountPath: /mount01                   # 14: 볼륨을 마운트할 경로를 작성합니다. 이렇게 하면 컨테이너 설정이 완료됩니다.
+   volumes:                                  # 15: 추가로 파드 내부에 생성할 볼륨을 생성합니다.
+   - name: hostpath-test01                   # 16: 볼륨 이름을 정합니다.
+     hostPath:                               # 17: 볼륨 타입을 설정해야 하는데 이번 실습에서는 hostPath 로 설정하겠습니다.
+       path: /home/eevee/work/volhost01      # 18: hostPath 볼륨을 생성할 경로를 입력해야 하는데, 앞서 myserver03 에서 생성했던 디렉터리로 설정합니다.
+       type: DirectoryOrCreate               # 19: hostPath 볼륨 타입을 설정합니다. DirectoryOrCreate 타입은 디렉터리가 존재하지 않는 경우에는 자동으로 생성하라는 옵션입니다.
