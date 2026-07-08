@@ -1,17 +1,17 @@
-apiVersion: v1
-kind: Pod	
+apiVersion: v1                           # Kubernetes API 버전
+kind: Pod                                # 리소스 타입: 파드
 metadata:	
-  name: nginx-volume-04	
+  name: nginx-volume-04                  # 파드의 이름
 spec:	
-  nodeSelector:	
-    kubernetes.io/hostname: myserver02	
+# nodeSelector:                          # 💡 단일 노드(Colima) 환경이므로 주석 처리합니다.
+#   kubernetes.io/hostname: myserver02   # 💡 이 옵션이 켜져 있으면 colima 노드에서 실행되지 않습니다.
   containers:	
   - name: nginx-test01	
     image: nginx:latest	
     volumeMounts:
-    - name: nfs-pv-01	
-      mountPath: /mount01	
+    - name: nfs-pv-01                    # ➋ 아래 정의한 볼륨 이름과 일치시킵니다.
+      mountPath: /mount01                # ➌ 파드(컨테이너) 내부의 연결 경로입니다.
   volumes:
-  - name: nfs-pv-01	
+  - name: nfs-pv-01                      # ➊ 파드 내에서 사용할 볼륨의 임시 이름입니다.
     persistentVolumeClaim:
-      claimName: pvc-01
+      claimName: pvc-01                  # 앞서 만든 계약서(PVC)의 이름을 지정합니다.

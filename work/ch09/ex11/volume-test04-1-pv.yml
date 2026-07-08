@@ -20,7 +20,12 @@ spec:
                                          # Delete: PVC 가 삭제될 때 PV 역시 삭제하고 연결된 외부 스토리지 데이터도 삭제
                                          # Recycle: PV 내부 파일을 삭제 (현재는 지원되지 않음)
   storageClassName: pv-test-01           # 스토리지 클래스 이름, PVC 와의 연결점이 된다.
-  nfs:       
-    server: 10.0.2.6                     # NFS 서버 IP 주소
-    path: /tmp/k8s-pv                    # NFS 서버의 공유 경로
-       
+
+  # nfs:       
+  #   server: 10.0.2.6                     # NFS 서버 IP 주소
+  #   path: /tmp/k8s-pv                    # NFS 서버의 공유 경로
+
+  # mac 에서 실습하기 위한 방법
+  # colima ssh -- sudo mkdir -p /tmp/k8s-pv && colima ssh -- sudo chmod 777 /tmp/k8s-pv
+  hostPath:                              # 💡 NFS 대신 단일 노드의 로컬 경로를 사용하도록 변경
+    path: /tmp/k8s-pv                    # 💡 방금 Colima 가상 머신 내부에 만든 실제 저장 경로
