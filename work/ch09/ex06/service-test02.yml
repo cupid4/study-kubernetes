@@ -1,0 +1,14 @@
+# kubectl get pod -o wide
+apiVersion: v1                            # ➋ apiVersion을 설정합니다.
+kind: Service                             # ➌ 오브젝트 타입은 Service라고 설정합니다.
+metadata:                                 # ➍ 메타 데이터를 작성합니다.
+  name: web-service-nodeport              # ➎ 서비스 이름을 정합니다.
+spec:                                     # ➏ spec을 통해 오브젝트의 상태를 정해줍니다.
+  selector:                               # ➐ 해당 서비스가 연동하게 될 앱을 정합니다.
+    app.kubernetes.io/name: web-deploy    # ➑ 앞서 만든 디플로이먼트 파일인 deploy-test01에서 생성한 web-deploy 앱과 연동할 것이므로 web-deploy라고 정합니다.
+  type: NodePort                          # ➒ 서비스 타입을 NodePort라고 정합니다.
+  ports:                                  # ➓ 해당 서비스를 사용하기 위한 포트 정보를 입력합니다.
+  - protocol: TCP                         # ⓫ 프로토콜은 TCP를 사용합니다.
+    nodePort: 31001                       # ⓬ 외부에서 노드의 IP를 통해 접근할 포트 번호(31001)를 지정합니다.
+    port: 80                              # ⓭ 서비스 자체의 포트 번호를 80으로 지정합니다.
+    targetPort: 80                        # ⓮ 파드(컨테이너) 내부에서 실행 중인 앱의 실제 포트 번호(80)로 매핑합니다.
