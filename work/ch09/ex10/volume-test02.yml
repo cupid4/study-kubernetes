@@ -5,7 +5,7 @@
    name: nginx-volume-02                     # 5: 적절한 파드 이름을 생성합니다.
  spec:                                       # 6: spec 을 통해 파드 내부의 상태를 정해주게 됩니다. 파드 내부에는 컨테이너와 볼륨을 생성할 예정입니다.
    nodeSelector:                             # 7: nodeSelector 를 통해 파드가 실행될 노드를 정합니다.
-     kubernetes.io/hostname: myserver03      # 8: 이번 실습에서 생성할 파드가 hostPath 가 존재하는 myserver03 에 생성되도록 설정하겠습니다.
+     kubernetes.io/hostname: myserver03      # 8: Pod 가 실행 될 node
    containers:                               # 9: 컨테이너를 생성합니다.
    - name: nginx-test01                      # 10: 컨테이너 이름을 정합니다.
      image: nginx:latest                     # 11: 컨테이너 생성에 사용할 이미지를 설정합니다.
