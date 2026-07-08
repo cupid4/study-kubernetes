@@ -1,0 +1,28 @@
+# PersistentVolumeClaim(PVC) 매니페스트
+# 쿠버네티스에서 Pod 이 사용할 저장소 요청을 정의합니다.
+# PVC 는 Pod 에서 저장소를 요청하는 인터페이스 역할을 합니다.
+# 이 PVC 는 PV 와 바인딩되어 Pod 에서 볼륨으로 사용할 수 있습니다.
+#
+# 1. vim 으로 PVC 를 생성할 yml 파일을 생성합니다.
+# 2. apiVersion 을 입력합니다.
+# 3. 오브젝트 종류를 PersistentVolumeClaim 으로 합니다.
+# 4. 메타 데이터를 입력합니다.
+# 5. 실행할 PVC 이름을 정합니다.
+# 6. spec 을 통해 PVC 내부 상태를 정합니다.
+# 7-8. accessModes 는 앞서 PV 와 마찬가지로 ReadWriteOnce 라고 정합니다.
+# 9. resources 를 통해 사용할 자원을 설정하겠습니다.
+# 10. PV 에게 보낼 요청 사항을 작성합니다.
+# 11. 리소스 사용량은 30 메가바이트로 설정합니다.
+# 12. PVC 가 사용할 PV 의 storageClassName 을 설정하는데, 이는 앞서 PV 파일 내부에서 사용한 storageClassName 과 동일한 이름으로 설정합니다.
+
+apiVersion: v1                           # 2. Kubernetes API 버전
+kind: PersistentVolumeClaim              # 3. 리소스 타입: 영구 볼륨 클레임
+metadata:
+  name: pvc-01                           # 5. PersistentVolumeClaim 의 이름
+spec:
+  accessModes:
+  - ReadWriteOnce                        # 7-8. 접근 모드: 단일 노드에서만 읽기/쓰기 가능 (RWO)
+  resources:
+    requests:       # 9-10. PV 에게 보낼 요청 사항을 작성합니다.
+      storage: 30Mi                      # 11. 저장소 용량 요청: 30 메가바이트
+  storageClassName: pv-test-01           # 12. 스토리지 클래스 이름, PV 와의 연결점이 된다.

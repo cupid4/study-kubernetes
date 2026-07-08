@@ -1,0 +1,26 @@
+
+# PersistentVolume(PV) 매니페스트
+# 쿠버네티스에서 클러스터 차원의 저장소 리소스를 정의합니다.
+# PV란 외부 스토리지를 의미한다.
+# PV 는 스토리지의 세부사항 (NFS, 디스크 등) 을 추상화하여 Pod 에서 사용할 수 있도록 합니다.
+# 이 PV 는 NFS 서버를 백엔드로 사용하며, 100Mi 저장소 용량을 제공합니다.
+# PVC(PersistentVolumeClaim) 가 이 PV 를 바인딩하여 Pod 에서 사용할 수 있습니다.
+
+apiVersion: v1                           # Kubernetes API 버전
+kind: PersistentVolume                   # 리소스 타입: 영구 볼륨
+metadata:       
+  name: pv-01                            # PersistentVolume 의 이름
+spec:       
+  accessModes:       
+  - ReadWriteOnce                        # 접근 모드: 단일 노드에서만 읽기/쓰기 가능 (RWO)
+  capacity:       
+    storage: 100Mi                       # 저장소 용량: 100 메가바이트
+  persistentVolumeReclaimPolicy: Retain  # 재사용 정책
+                                         # Retain: PVC 가 삭제되어도 PV 내부의 데이터는 그대로 유지
+                                         # Delete: PVC 가 삭제될 때 PV 역시 삭제하고 연결된 외부 스토리지 데이터도 삭제
+                                         # Recycle: PV 내부 파일을 삭제 (현재는 지원되지 않음)
+  storageClassName: pv-test-01           # 스토리지 클래스 이름, PVC 와의 연결점이 된다.
+  nfs:       
+    server: 10.0.2.6                     # NFS 서버 IP 주소
+    path: /tmp/k8s-pv                    # NFS 서버의 공유 경로
+       
