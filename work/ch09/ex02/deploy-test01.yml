@@ -1,4 +1,6 @@
-# 
+# kubectl apply -f deploy-test01.yml 
+# kubectl get deploy,rs,po
+# kubectl delete -f deploy-test01.yml 
 
 apiVersion: apps/v1                         # ❷ 쿠버네티스 API의 그룹과 버전을 지정합니다. (디플로이먼트는 apps/v1 사용)
 kind: Deployment                            # ❸ 생성할 오브젝트 종류가 디플로이먼트(Deployment)임을 명시합니다.
