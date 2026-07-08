@@ -1,0 +1,25 @@
+# 실습 방법
+# kubectl create -f nginx-test01.yml
+# kubectl apply -f nginx-test01.yml
+# kubectl delete -f nginx-test01.yml
+
+# 쿠버네티스 API의 버전을 지정합니다. 파드는 v1을 사용합니다.
+apiVersion: v1
+
+# 생성할 오브젝트의 종류를 지정합니다. 파드를 생성하므로 Pod입니다.
+kind: Pod
+
+# 오브젝트의 메타 정보(이름, 라벨 등)를 작성하는 구문입니다.
+metadata:
+  # 다른 오브젝트들과 구분할 수 있는 식별자 역할을 하는 파드의 이름입니다.
+  name: nginx01
+
+# 파드의 명세(원하는 상태)를 지정하는 구문입니다.
+spec:
+  # 파드 내부에서 실행될 컨테이너들을 지정합니다.
+  containers:
+    # 파드에 포함될 컨테이너의 이름을 지정합니다.
+    - name: nginx-test01
+      # 컨테이너를 생성할 때 사용할 도커 이미지와 태그를 지정합니다.
+      image: nginx:latest
+
