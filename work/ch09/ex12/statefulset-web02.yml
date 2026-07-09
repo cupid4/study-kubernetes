@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: sfs-test01
 spec:		
-  replicas: 2		
+  replicas: 2                            # ⑦ [파드 개수] 실행할 파드의 개수를 2개로 줄인다
   selector:				
     matchLabels:			
       app.kubernetes.io/name: web-sfs01				
