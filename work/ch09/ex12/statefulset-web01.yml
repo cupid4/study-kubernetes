@@ -1,18 +1,18 @@
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: sfs-test01
-spec:		
-  replicas: 3		
-  selector:				
+apiVersion: apps/v1                      # ② apiVersion을 정합니다.
+kind: StatefulSet                        # ③ 오브젝트 종류를 스테이트풀셋으로 정합니다.
+metadata:                                # ④ 메타 데이터를 작성합니다.
+  name: sfs-test01                       # ⑤ 스테이트풀셋의 이름을 정합니다.
+spec:                                    # ⑥ 그러고 나서 spec을 통해 스테이트풀셋 상태를 정하겠습니다.
+  replicas: 3                            # ⑦ 스테이트풀셋이 생성할 파드 개수는 세 개로 정하겠습니다.
+  selector:                              # ⑧ ⑨ ⑩ 스테이트풀셋의 selector의 matchLabels를 통해 파드를 하나로 묶어줍니다.
     matchLabels:			
       app.kubernetes.io/name: web-sfs01				
-  serviceName: sfs-service01		
-  template:			
-    metadata:			
+  serviceName: sfs-service01             # ⑪ 스테이트풀셋과 연동할 서비스를 정합니다.
+  template:                              # ⑫ template을 통해 스테이트풀셋을 구성하고 있는 구성 요소를 정할 수 있습니다.
+    metadata:                            # ⑬ ⑭ ⑮ metadata의 labels를 통해 앞서 정했던 matchLabels와 동일한 이름으로 묶어줍니다.
       labels:			
         app.kubernetes.io/name: web-sfs01		
-    spec:			
-      containers:		
-      - name: nginx		
-        image: nginx:latest
+    spec:                                # ⑯ spec을 통해 내부 상태를 정합니다.
+      containers:                        # ⑰ 컨테이너 정보를 입력합니다.
+      - name: nginx                      # ⑱ 컨테이너 이름을 정합니다.
+        image: nginx:latest              # ⑲ 어떤 이미지를 사용할지 정합니다.
