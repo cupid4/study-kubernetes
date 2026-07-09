@@ -1,0 +1,14 @@
+# 헤드리스 서비스를 생성하는 yml
+
+apiVersion: v1                           # ② apiVersion 을 설정합니다.
+kind: Service                            # ③ 오브젝트 종류는 Service 로 정합니다.
+metadata:                                # ④ 메타 데이터를 작성합니다.
+  name: sfs-service01                    # ⑤ 서비스 이름을 정합니다.
+spec:                                    # ⑥ spec 을 통해 서비스 내부 상태를 정합니다.
+  selector:                              # ⑦ 어떤 스테이트풀셋과 연동할지를 정합니다.
+    app.kubernetes.io/name: web-sfs01    # ⑧ 이번 실습에서는 web-sfs01 이라는 스테이트풀셋과 연동합니다. web-sfs01 은 이후에 생성합니다.
+  type: ClusterIP                        # ⑨ 서비스 타입을 정합니다.
+  clusterIP: None                        # ⑩ 헤드리스 서비스로 대표 IP(ClusterIP)를 None 으로 설정한다.
+  ports:                                 # ⑪ 서비스 포트를 정합니다.
+  - protocol: TCP                        # ⑫ 프로토콜 정합니다.
+    port: 80                             # ⑬ 서비스 포트를 정합니다.
