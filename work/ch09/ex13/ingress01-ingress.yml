@@ -1,18 +1,18 @@
-apiVersion: networking.k8s.io/v1	
-kind: Ingress	
-metadata:	
-  name: ingress-test01	
-  annotations:		
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:	
-  ingressClassName: nginx	
-  rules:
-  - http:	
-      paths:	
-      - path: /test01		
-        pathType: Prefix	
-        backend:
-          service:	
-            name: ingress-service-test01
+apiVersion: networking.k8s.io/v1                 # ② apiVersion을 설정합니다. 인그레스를 생성하려면 networking.k8s.io/v1이라고 입력해야 합니다.
+kind: Ingress                                    # ③ 오브젝트 종류를 Ingress라고 정합니다.
+metadata:                                        # ④ 다음으로는 메타 데이터를 설정합니다.
+  name: ingress-test01                           # ⑤ 인그레스 이름을 정합니다.
+  annotations:                                   # ⑥ 그리고 annotations는 인그레스 컨트롤러에 대해 옵션을 설정해야 할 때 쓰는 항목입니다.
+    nginx.ingress.kubernetes.io/rewrite-target: / # ⑦ 이후 URL 접근 경로를 루트 경로로 바꿔주는 옵션입니다. (예: /test01로 접근해도 실제로는 /로 접근)
+spec:                                            # ⑧ 오브젝트 내부 상태를 정합니다.
+  ingressClassName: nginx                        # ⑨ 인그레스 클래스 이름을 설정합니다. 이는 $ kubectl get ingressclass 결과인 Nginx와 동일해야 합니다.
+  rules:                                         # ⑩ 규칙을 설정합니다.
+  - http:                                        # ⑪ http를 사용합니다.
+      paths:                                     # ⑫ 해당 경로들을 설정할 수 있는데, 이번 실습에서는 한 가지 경로만 설정합니다.
+      - path: /test01                            # ⑬ 실제 접근 경로를 입력합니다. 이후 지금 설정한 경로로 접근할 예정입니다.
+        pathType: Prefix                         # pathType: Prefix 옵션에서 접두사가 일치하면 해당 경로가 적용됩니다. (Exact는 정확히 일치해야 함)
+        backend:                                 # ⑭ 백엔드를 설정합니다.
+          service:                               # ⑮ 인그레스에 연동할 서비스를 등록합니다.
+            name: ingress-service-test01         # ⑯⑰⑱ 서비스 이름, 포트, 번호를 입력합니다.
             port:
               number: 80
