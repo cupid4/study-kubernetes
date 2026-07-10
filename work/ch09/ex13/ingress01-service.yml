@@ -1,13 +1,12 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: ingress-service-test01
-spec:
-  selector:
-    app.kubernetes.io/name: web-deploy01
-  type: ClusterIP
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-
+apiVersion: v1                            # ② apiVersion을 설정합니다.
+kind: Service                             # ③ 오브젝트 타입을 Service라고 설정합니다.
+metadata:                                 # ④ 메타 데이터를 작성합니다.
+  name: ingress-service-test01            # ⑤ 서비스 이름을 정합니다.
+spec:                                     # ⑥ spec을 통해 오브젝트의 상태를 정합니다.
+  selector:                               # ⑦ 해당 서비스가 연동하게 될 앱을 정합니다.
+    app.kubernetes.io/name: web-deploy01  # ⑧ 앞서 만든 디플로이먼트 파일에서 생성한 web-deploy01 앱과 연동할 것이므로 web-deploy01이라고 정합니다.
+  type: ClusterIP                         # ⑨ 서비스 타입을 정합니다.
+  ports:                                  # ⑩ 해당 서비스를 사용하기 위한 포트를 정합니다.
+  - protocol: TCP                         # ⑪ 프로토콜은 TCP로 설정합니다.
+    port: 80                              # ⑫ 서비스가 사용하는 포트인 Port를 설정합니다.
+    targetPort: 80                        # ⑬ 파드가 받게 될 포트인 targetPort를 설정합니다.
