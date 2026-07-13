@@ -1,0 +1,32 @@
+# Deployment(디플로이먼트) 란?
+# 쿠버네티스에서 Deployment(디플로이먼트) 는 "클라우드 애플리케이션의 배포 및 관리를 자동화하는" 오브젝트입니다.
+# - 파드 (Pod) 와 레플리카셋 (ReplicaSet) 의 생성 및 관리를 담당합니다.
+# - 원하는 상태 (desired state) 를 선언하면 쿠버네티스가 자동으로 조정합니다.
+# - 스케일링, 롤링 업데이트, 롤백 등의 기능을 지원합니다.
+# - 주로 무상태 (stateless) 애플리케이션 배포에 사용됩니다.
+
+
+apiVersion: apps/v1                               # ② 버전을 지정합니다 (Deployment 를 쓰기 위한 기본 규격입니다).
+kind: Deployment                                  # ③ 생성할 오브젝트 종류를 'Deployment'로 지정합니다.
+metadata:                                         # ④ 이 오브젝트의 이름표 (메타데이터) 를 달아주는 기본 정보 칸입니다.
+  name: deploy-django                             # ⑤ 이 Deployment 의 이름을 'deploy-django'로 정합니다.
+spec:                                             # ⑥ [상세 설계] 이 Deployment 의 동작 방식을 설정합니다.
+  replicas: 3                                     # ⑦ [파드 개수] 원하는 파드 개수를 3 개로 설정합니다.
+  selector:                                       # ⑧ [선택자] 어떤 파드를 관리할지 선택하는 기준을 정합니다.
+    matchLabels:                                  # ⑨ [일치 레이블] 레이블이 일치하는 파드를 선택합니다.
+      app.kubernetes.io/name: web-deploy          # ⑩ 레이블 키와 값을 'app.kubernetes.io/name: web-deploy'로 설정합니다.
+  template:                                       # ⑪ [파드 템플릿] Deployment 가 생성할 파드의 설계도를 시작합니다.
+    metadata:                                     # ⑫ [파드 메타데이터] 파드의 이름표 (메타데이터) 를 설정합니다.
+      labels:                                     # ⑬ [레이블] 파드에 레이블을 달아줍니다.
+        app.kubernetes.io/name: web-deploy        # ⑭ 레이블 키와 값을 'app.kubernetes.io/name: web-deploy'로 설정합니다.
+    spec:                                         # ⑮ [파드 내부 설계] 파드 내부에 어떤 컨테이너를 실행할지 설정합니다.
+      containers:                                 # ⑯ 컨테이너 목록을 시작합니다.
+      - name: nginx-d                             # ⑰ 첫 번째 컨테이너 이름을 'nginx-d'로 정합니다.
+        image: eeveek8s/mynginxd_ch10:0.3         # ⑱ 컨테이너 이미지로 'eeveek8s/mynginxd_ch10:0.3' 버전을 사용합니다.
+        ports:                                    # ⑲ [포트 설정] 컨테이너가 사용할 포트를 설정합니다.
+        - containerPort: 80                       # ⑳ 컨테이너 내부 포트 80 을 노출합니다.
+
+      - name: django-web                          # ㉑ 두 번째 컨테이너 이름을 'django-web'으로 정합니다.
+        image: eeveek8s/mydjango_ch10:0.2         # ㉒ 컨테이너 이미지로 'eeveek8s/mydjango_ch10:0.2' 버전을 사용합니다.
+        ports:                                    # ㉓ [포트 설정] 컨테이너가 사용할 포트를 설정합니다.
+        - containerPort: 8000                     # ㉔ 컨테이너 내부 포트 8000 을 노출합니다.

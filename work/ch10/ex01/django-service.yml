@@ -1,0 +1,19 @@
+# Service(서비스) 란?
+# 쿠버네티스에서 Service(서비스) 는 "파드 간의 네트워크 통신을 위한 안정적인 엔드포인트를 제공하는" 오브젝트입니다.
+# - 파드는 생성과 삭제가 빈번하기 때문에 IP 가 변동될 수 있습니다. Service 는 이런 파드들을 하나의 고정된 IP 로 관리합니다.
+# - 로드 밸런싱 기능을 제공하여 트래픽을 여러 파드에 분산합니다.
+# - 주로 Deployment 와 함께 사용되어 외부에서 애플리케이션에 접근할 수 있도록 합니다.
+
+
+apiVersion: v1                                      # ② 버전을 지정합니다 (Service 를 쓰기 위한 기본 규격입니다).
+kind: Service                                       # ③ 생성할 오브젝트 종류를 'Service'로 지정합니다.
+metadata:                                           # ④ 이 오브젝트의 이름표 (메타데이터) 를 달아주는 기본 정보 칸입니다.
+  name: django-service                              # ⑤ 이 Service 의 이름을 'django-service'로 정합니다.
+spec:                                               # ⑥ [상세 설계] 이 Service 의 동작 방식을 설정합니다.
+  selector:                                         # ⑦ [선택자] 어떤 파드를 이 Service 에 연결할지 선택하는 기준을 정합니다.
+    app.kubernetes.io/name: web-deploy              # ⑧ 레이블이 'app.kubernetes.io/name: web-deploy'인 파드를 선택합니다.
+  type: ClusterIP                                   # ⑨ [서비스 타입] 'ClusterIP'로 설정하여 클러스터 내부에서만 접근 가능하도록 합니다.
+  ports:                                            # ⑩ [포트 설정] Service 가 사용할 포트를 설정합니다.
+  - protocol: TCP                                   # ⑪ 프로토콜을 'TCP'로 설정합니다.
+    port: 80                                        # ⑫ Service 가 노출하는 포트 번호를 80 으로 설정합니다.
+    targetPort: 80                                  # ⑬ 파드의 컨테이너 내부 포트를 80 으로 설정합니다.
