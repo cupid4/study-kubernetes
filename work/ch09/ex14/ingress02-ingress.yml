@@ -1,0 +1,37 @@
+# Ingress(인그레스)란?
+# 쿠버네티스에서 Ingress(인그레스) 는 외부에서 클러스터 내부의 서비스로 접근할 수 있는 HTTP/HTTPS 경로를 관리하는 오브젝트입니다.
+# 간단히 말해, '게이트웨이' 역할을 하며, 하나의 외부 IP 로 들어오는 요청을 경로 (path) 나 도메인 (host) 에 따라 적절한 내부 서비스로 라우팅합니다.
+# 주요 특징:
+# - 경로 기반 라우팅: /test01, /test02 와 같은 URL 경로별로 다른 서비스로 요청을 보낼 수 있습니다.
+# - 도메인 기반 라우팅: host 설정을 통해 다른 도메인 (예: test1.example.com, test2.example.com) 을 다른 서비스로 연결할 수 있습니다.
+# - SSL/TLS 지원: HTTPS 를 위한 인증서 설정이 가능합니다.
+# - 인그레스 컨트롤러 필요: 인그레스 오브젝트만으로는 작동하지 않으며, Nginx, Traefik, HAProxy 등의 '인그레스 컨트롤러'가 별도로 실행되어야 합니다.
+# - 주로 언제 쓰나요?
+#   여러 서비스를 하나의 외부 IP 로 제공해야 할 때, 또는 도메인/경로별로 트래픽을 분산시키고자 할 때 필수적으로 사용됩니다.
+
+
+apiVersion: networking.k8s.io/v1                    # ② 버전을 지정합니다 (Ingress 를 쓰기 위한 기본 규격입니다).
+kind: Ingress                                       # ③ 생성할 오브젝트 종류를 '인그레스'로 지정합니다.
+metadata:                                           # ④ 이 오브젝트의 이름표 (메타데이터) 를 달아주는 기본 정보 칸입니다.
+  name: ingress-test02                              # ⑤ 이 인그레스의 이름을 'ingress-test02'로 정합니다.
+  annotations:                                      # ⑥ [주석 설정] 인그레스의 동작 방식을 세부적으로 조절하는 주석 (annotations) 을 추가합니다.
+    nginx.ingress.kubernetes.io/rewrite-target: /   # ⑦ 요청 경로를 재작성합니다. 여기서는 모든 요청을 백엔드의 루트(/) 경로로 강제 매핑합니다. 예: /test01 이나 /test01/api 모두 백엔드에는 똑같이 '/'로 전달됩니다.
+spec:                                               # ⑧ [상세 설계] 이 인그레스가 어떻게 트래픽을 라우팅해야 하는지 상세 설정을 시작합니다.
+  ingressClassName: nginx                           # ⑨ [인그레스 컨트롤러] 'nginx' 타입의 인그레스 컨트롤러를 사용하여 이 설정을 적용하겠다고 지정합니다.
+  rules:                                            # ⑩ [라우팅 규칙] 외부 요청을 어떻게 처리할지 규칙을 정의합니다.
+  - http:                                           # ⑪ HTTP 프로토콜에 대한 설정을 시작합니다.
+      paths:                                        # ⑫ 경로 (path) 기반 라우팅 규칙 목록입니다.
+      - path: /test01                               # ⑬ 첫 번째 경로: '/test01'로 들어오는 요청을 처리합니다.
+        pathType: Prefix                            # ⑭ 경로 타입을 'Prefix'로 지정합니다. '/test01'로 시작하는 모든 경로 (/test01, /test01/api 등) 가 매칭됩니다.
+        backend:                                    # ⑮ [백엔드 서비스] 매칭된 요청을 보낼 내부 서비스를 지정합니다.
+          service:                                  # ⑯ 서비스 정보를 시작합니다.
+            name: ingress-service-test01            # ⑰ 서비스 이름을 'ingress-service-test01'로 지정합니다.
+            port:                                   # ⑱ 포트 정보를 시작합니다.
+              number: 80                            # ⑲ 서비스의 포트 번호를 80 으로 지정합니다.
+      - path: /test02                               # ⑳ 두 번째 경로: '/test02'로 들어오는 요청을 처리합니다.
+        pathType: Prefix                            # ㉑ 경로 타입을 'Prefix'로 지정합니다.
+        backend:                                    # ㉒ [백엔드 서비스] 매칭된 요청을 보낼 내부 서비스를 지정합니다.
+          service:                                  # ㉓ 서비스 정보를 시작합니다.
+            name: ingress-service-test02            # ㉔ 서비스 이름을 'ingress-service-test02'로 지정합니다.
+            port:                                   # ㉕ 포트 정보를 시작합니다.
+              number: 80                            # ㉖ 서비스의 포트 번호를 80 으로 지정합니다.
